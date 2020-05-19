@@ -1,0 +1,176 @@
+---
+title: "Exploratory Analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("rate_box_plot.R")
+source("barplot.R")
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(knitr)
+library(kableExtra)
+obesity_data <- read.csv("Obesity_GDP_PanelData.csv")
+```
+
+# Distribution of Variables 
+### Obesity and Poverty Rates
+```{r, echo=FALSE, warning=FALSE}
+boxplot(rates$obesity_rate, rates$poverty_rate,
+    main = "Distribution of Rates",
+    names = c("Obesity Rate", "Poverty Rate"),
+    col = rainbow(2),
+    ylab = "Percentages"
+)
+```
+
+The boxplots above display the distribution of the obesity rates and poverty rates across all fifty states. It is clear that the distribution of obesity rates is higher than that of poverty rates. The average obesity rate across all states is higher than that of poverty rates. The mean obesity rate is `r signif(obesity_avg, 3)`% which is `r signif(obesity_avg - poverty_avg, 3)`% higher than the poverty mean of `r signif(poverty_avg, 3)`%. In addition, the median obesity rate of `r signif(obesity_median, 3)`% is `r signif(obesity_median - poverty_median, 3)`% higher than the poverty rate median of `r signif(obesity_median, 3)`%. This shows that, on average, a higher percent of people across the United States are obese then are in poverty. Both rates have an inner quartile range of under 5, meaning that 50% of the rates for each states are less than a 5% difference of each other. The inner quartile range for obesity rates is `r signif(obesity_Q3, 3)` and the inner quartile range for poverty rates is `r signif(poverty_Q3, 3)`. The distribution of both rates can also be analized in terms of standard deviation. The standard deviation for obesity rate is `r signif(obesity_sd, 3)` and the standard deviation for poverty rate is `r signif(poverty_sd, 3)`.
+
+### Average Income Distribution Across Four Years
+
+```{r income data 2014, echo=FALSE, warning=FALSE}
+data_2014 <- obesity_data %>%
+             filter(Year == 2014)
+
+income_2014 <- data_2014 %>%
+               select(Average.Income)
+
+```
+
+```{r income data 2015, echo=FALSE}
+data_2015 <- obesity_data %>%
+             filter(Year == 2015)
+
+income_2015 <- data_2015 %>%
+               select(Average.Income)
+
+```
+
+```{r income data 2016, echo=FALSE, warning=FALSE}
+data_2016 <- obesity_data %>%
+             filter(Year == 2016)
+
+income_2016 <- data_2016 %>%
+               select(Average.Income)
+```
+
+```{r income data 2017, echo=FALSE, warning=FALSE}
+data_2017 <- obesity_data %>%
+             filter(Year == 2017)
+
+income_2017 <- data_2017 %>%
+               select(Average.Income)
+
+```
+
+**Average Income Summary**
+
+To further define the causes of obesity within the United States, a prevalent starting point
+is average income. The selected dataset provides average income for all fifty states across four years: 2014, 2015, 2016, and 2017. Here is a table of summary statistics:
+
+
+```{r income data table, echo=FALSE, warning=FALSE}
+years <- c(2014, 2015, 2016, 2017)
+mean <- c(mean(income_2014$Average.Income), mean(income_2015$Average.Income),  
+          mean(income_2016$Average.Income), mean(income_2017$Average.Income))
+minimum <- c(min(income_2014$Average.Income), min(income_2015$Average.Income),  
+             min(income_2016$Average.Income), min(income_2017$Average.Income))
+median <- c(median(income_2014$Average.Income), median(income_2015$Average.Income),  
+            median(income_2016$Average.Income), median(income_2017$Average.Income))
+maximum <- c(max(income_2014$Average.Income), max(income_2015$Average.Income),  
+            max(income_2016$Average.Income), max(income_2017$Average.Income))
+
+summary_data <- data.frame(years, mean, minimum, median, maximum)
+
+kable(summary_data, col.names = c("Year", "Mean Income", "Minimum Income", "Median Income", "Maximum Income")) %>%
+kable_styling(latex_options = "striped")  
+```
+
+In visually represent the distribution of average income across four years, the box plots below demonstrate relevant metrics such as means, medians, minimums, maximums, interquartile range data, and any outliers.
+```{r income box plot, echo=FALSE, warning=FALSE}
+dist_plot <- boxplot(income_2014$Average.Income, 
+                     income_2015$Average.Income,        
+                     income_2016$Average.Income, 
+                     income_2017$Average.Income,
+                     col=rainbow(4),
+                     names= c(2014, 2015, 2016, 2017),
+                     xlab="Year",
+                     ylab="Average Income ($)",
+                     main="Distribution of Average Income Across Years")
+
+```
+
+**Analysis of Distribution of Average Income**
+
+In analyzing the chart, it can be shown that the average income increases each year. From 2014 to 2015, the mean average income increased around 1,069 dollars. From 2015 to 2016, the mean average income increased 929 dollars. Finally, from 2016 to 2017, the mean average income increased 1,133 dollars. The minimum and maximum average income values also increase across years. There is a relationship then, between year and income, in which average income increases each year. Only one outlier during 2014 is visible that is almost equivalent to the maximum value of 2015.
+
+
+# Relationships Between Variables
+## Effects Of Wealth and Obesity
+``` {r, echo = FALSE}
+ggplot(obesity_data, 
+                                    aes(x = Average.Income,
+                                        y = Adult.Obesity.100,
+                                        color = Year)) +
+  geom_point() +
+  xlab("Average Income") +
+  ylab("Percentage of Adult Obesity By State And Year") +
+  ggtitle("Income vs Obesity Rate")
+```
+<br>
+Unsuprisingly, we see a correlation between income and obesity. In general as the average 
+income increases, we see the obesity rate decreases as well. This isn't a surprise due 
+to the issue that less wealthy people are more likely to live in food deserts and have less access
+to purchasing healthier foods. Another issue that can influence this correlation is that 
+junk food are typically cheaper than healthier foods. We see this with fast food restaurants
+and how they are able to offer very cheap meals as compared to a standard restaurant. 
+
+``` {r, echo = FALSE}
+ggplot(obesity_data,
+                                  aes(x = Poverty.Rate.100,
+                                      y = Adult.Obesity.100,
+                                      color = Year)) +
+  geom_point() +
+  xlab("Poverty Rate Percentage in State") + 
+  ylab("Percentage of Adult Obesity By State And Year") +
+  ggtitle("Poverty Rate Vs. Obesity Rate")
+```
+<br>
+We continue to see the trend with wealth and obesity rates as well when we compare poverty
+rates and obestiy rates. In this graph, we see that as poverty rates rises, so does the 
+obesity rate. This falls in line with our conclusions with average income because income 
+is the determining factor if someone lives in poverty or not.
+
+``` {r, echo = FALSE}
+ggplot(obesity_data,
+                         aes(x = Real.GDP,
+                             y = Adult.Obesity.100,
+                             color = Year)) +
+  geom_point() +
+  xlab("State GDP") + 
+  ylab("Percentage of Adult Obesity By State And Year") +
+  ggtitle("State GDP Vs. Obesity Rate")
+```
+<br>
+Finally, comparing a state's GDP to its obesity rate, we see that there isn't a strong
+correlation between the two. This is highly surprising because the previous two charts
+display a fairly strong correlation between wealth and obesity while as we see in this chart,
+a state's GDP typically doesn't affect the obesity rates of its state. Although, we can see
+that the wealthier states have a relatively low obesity rate, the poorer states have a large variation
+of obesity rates. This draws into question if there are other factors, such as region, that can cause such
+a large disparity among the poor states.
+
+Another interesting trend we see in all three charts is that the years, which are color 
+coded on the graphs are distrubuted quite evenly. We do not see clusters of obesity and income rates for certain years which suggests that there is not a signicant change in income or obesity levels as time goes on. However, our data is limited from 2014-2017 so further research will be needed to better determine how obesity levels change with time. 
+<br>
+
+### Obesity Rates Across Regions
+``` {r, echo = FALSE}
+bar_plot
+```
+<br>
+Based on this bar chart, we can see that average obesity rates across different regions from year 2014 to 2017 is at around 30%. The southeast Region has the highest average obesity rate whereas the Rocky Mountain Region has the lowest average obesity rate. 
+
+Since the higher obesity rate regions and the lower obesity rate regions are scattered, we can conclude that there is no strong correlation between region and obesity rates. One possible explaination for why southeast region has the highest obesity rate could be because that there is more urban area in the southeast region. 
