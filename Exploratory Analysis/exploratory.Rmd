@@ -15,7 +15,7 @@ library(kableExtra)
 obesity_data <- read.csv("Obesity_GDP_PanelData.csv")
 ```
 
-# Distribution of Variables 
+## Distribution of Variables 
 ### Obesity and Poverty Rates
 ```{r, echo=FALSE, warning=FALSE}
 boxplot(rates$obesity_rate, rates$poverty_rate,
@@ -107,8 +107,8 @@ dist_plot <- boxplot(income_2014$Average.Income,
 In analyzing the chart, it can be shown that the average income increases each year. From 2014 to 2015, the mean average income increased around 1,069 dollars. From 2015 to 2016, the mean average income increased 929 dollars. Finally, from 2016 to 2017, the mean average income increased 1,133 dollars. The minimum and maximum average income values also increase across years. There is a relationship then, between year and income, in which average income increases each year. Only one outlier during 2014 is visible that is almost equivalent to the maximum value of 2015.
 
 
-# Relationships Between Variables
-## Effects Of Wealth and Obesity
+## Relationships Between Variables
+### Effects Of Wealth and Obesity
 ``` {r, echo = FALSE}
 ggplot(obesity_data, 
                                     aes(x = Average.Income,
