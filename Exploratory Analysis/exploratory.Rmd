@@ -1,5 +1,6 @@
 ---
 title: "Exploratory Analysis"
+author: "Steven Luong, Bridget Haney, Emma Dickenson, Jennifer Li"
 output: html_document
 ---
 
