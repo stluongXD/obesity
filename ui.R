@@ -1,5 +1,16 @@
 library(shiny)
 
+years <- selectInput(
+  "years",
+  label = "Years",
+  choices = list("2014" = as.numeric(2014),
+                 "2015" = as.numeric(2015),
+                 "2016" = as.numeric(2016),
+                 "2017" = as.numeric(2017)),
+  selected = as.numeric(2014)
+)
+
+
 ui <- shinyUI(
   fluidPage(
     tags$h1("Obesity In America"),
@@ -39,13 +50,10 @@ ui <- shinyUI(
                 in the United States has an impact on the prevelance of obesity."),
         tags$p("Finally, the last section, 'Effectiveness of Public Policy on Obesity', develops a higher understanding of whether preventative measures
                and health policies that were enacted across the states have been beneficial in reducing
-               obesity rates in the United States."),
-        )
+               obesity rates in the United States.")
       ),
       tabPanel(
         tags$h4("Effects of Wealth on Obesity")
-        # graph/sliders and related stuff goes here
-        # add a paragraph of the insights gained
       ),
       tabPanel(
         tags$h4("Regional Differences on Obesity")
@@ -53,13 +61,22 @@ ui <- shinyUI(
         # add a paragraph of the insights gained
       ),
       tabPanel(
-        tags$h4("Effectiveness of Public Policy on Obesity")
+        tags$h4("Effectiveness of Public Policy on Obesity"),
         # add graph/sliders and related stuff goes here
         # add a paragraph of the insights gained
+        sidebarLayout(
+          sidebarPanel(
+            years
+          ),
+          mainPanel(
+            plotlyOutput("policy_map")
+          )
+        )
       ),
       tabPanel(
         tags$h4("Conclusion"),
         tags$p("Conclusion goes here")
       )
+    )
   )
 )
