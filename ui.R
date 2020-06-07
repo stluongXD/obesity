@@ -1,7 +1,10 @@
 library(shiny)
 library(plotly)
+library(ggplot2)
 source("./scripts/intro.R")
 source("./scripts/conclusion.R")
+source("./scripts/income.R")
+
 
 years <- selectInput(
   "years",
@@ -13,6 +16,15 @@ years <- selectInput(
   selected = as.numeric(2014)
 )
 
+
+factors <- selectInput(
+  "factors",
+  label = "Factors",
+  choices = list("Income" = "Income",
+                 "Poverty Rate" = "Poverty_Rate",
+                 "State GDP" = "State_GDP"),
+                 selected = "Average.Income"
+)
 
 ui <- shinyUI(
   fluidPage(
@@ -37,7 +49,25 @@ ui <- shinyUI(
         tags$p(analysis_pt3)
       ),
       tabPanel(
-        tags$h4("Effects of Wealth on Obesity")
+        tags$h4("Effects of Wealth on Obesity"),
+        sidebarLayout(
+          sidebarPanel(
+           factors  
+          ),
+          mainPanel(
+            plotOutput("income_plot")
+          )
+        ),
+        br(),
+        tags$h4("Sections of Analysis"),
+        tags$h5("Analysis on the Relationship Between Income and Obesity Rate"),
+        tags$p(Analysis_Income),
+        br(),
+        tags$h5("Analysis on the Relationship Between Poverty Rate and Obesity Rate"),
+        tags$p(Analysis_poverty),
+        br(),
+        tags$h5("Analysis on the Relationship Between State GDP and Obesity Rate"),
+        tags$p(Analysis_GDP)
       ),
       tabPanel(
         tags$h4("Regional Differences on Obesity")
