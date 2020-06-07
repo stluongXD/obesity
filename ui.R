@@ -3,6 +3,7 @@ library(plotly)
 source("./scripts/intro.R")
 source("./scripts/conclusion.R")
 
+
 years <- selectInput(
   "years",
   label = "Years",
@@ -53,9 +54,21 @@ ui <- shinyUI(
             years
           ),
           mainPanel(
-            plotlyOutput("policy_map")
+            plotlyOutput("policy_map"),
           )
-        )
+        ),
+        tags$p("In the scope of the United States, the displays adult obesity rates and number of policies implemented
+               to help reduce obesity. Not all states
+               participated in enacting health policies during certain years, so they may not show up on the map."),
+        tags$p("Overall, it seems like 2015 was the year in which most states enacted most of 
+               of their policies. The highest number of legislation that year was New York with 171
+               enacted policies, while Georgia had the lowest with 2. It is interesting to see a 
+               spike of policies in 2015, only for it to decrease drastically in 2016 and 2017."),
+        tags$p("After implementing the policies, it is important to look for the impacts on obesity rate. In specifically looking at New York
+               and its obesity rate of 24.2 in 2015, it can be show in 2016 and 2017, 
+               the aftermath of the policies was very minimal. The obesity rate stayed around 24%, regardless of
+               the attempts to decrease it. It inevitably seems like, from the data, that no policies 
+               truly had a heavy impact on any of the obesity rates of any state.")
       ),
       tabPanel(
         tags$h4("Conclusion"),
