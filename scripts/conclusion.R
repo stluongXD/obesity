@@ -24,5 +24,13 @@ introduced each year.
 "
 
 legislation <-  "
-legislation conclusion goes here. Need to wait until legislation map is finished before we can conclude anything
+We see can see that from the map on the 'Effectiveness of Public Policy On Obesity' tab that there is a large disparity of
+state legislation introduced that can combat obesity between New York and Southeastern states. Athough there appears to be a
+corrolation between having legislation to combat obesity, and obesity rate, we can look closely at the trend's of individual
+state obesity levels. In the case of New York, we see that even though they had many legislations related to obesity, it does
+not appear to have a significant effect on adult obesity. In fact, we see this trend with many other states as well; obesity 
+rates have slight variation from year to year, but it remains fairly consistent even though some states introduced multiple
+legislations. This suggest that writing legislation may not be the most effecitve solution when trying to combat adult obesity.
+Instead, it may be better for the government to focus on income inequality since there appears to be a strong correlation between
+wealth and obesity rates as discussed earlier.
 "
