@@ -1,0 +1,12 @@
+name: obesity
+title: obesity
+username:
+account: stluongxd
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2423398
+bundleId: 3240433
+url: https://stluongxd.shinyapps.io/obesity/
+when: 1591586365.48868
+asMultiple: FALSE
+asStatic: FALSE
