@@ -24,7 +24,6 @@ bar_plot <- ggplot(data2,
   ylab("Average Obesity Rate Percentage") +
   ggtitle("Average Obesity Rate for each region") 
 
-show(bar_plot)
 
 obesity <- df %>%
   group_by(Region) %>%
@@ -71,10 +70,11 @@ state_group <- seventh %>%
 
 create_plot <- function(region) {
   chosen_region <- state_group %>%
-    filter(Region == region)
+    filter(Region == region) %>%
+    rename("Obesity_Rate" = o_rate_state)
   
   plot <- ggplot(chosen_region, 
-                 aes(x = State, y = o_rate_state)) + 
+                 aes(x = State, y = Obesity_Rate)) + 
     geom_bar(aes(fill = State), stat = "identity") +
     coord_flip() +
     xlab("State") +

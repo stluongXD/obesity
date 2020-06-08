@@ -2,12 +2,13 @@ library(dplyr)
 library(plotly)
 library(ggplot2)
 
-legislation <- read.csv("./data/legislation.csv", fileEncoding="UTF-8-BOM") %>%
+legislation_data <- read.csv("./data/legislation.csv", fileEncoding="UTF-8-BOM") %>%
      rename(State = LocationDesc) # need to rename column so that we can join the two data sets later
-obesity <- read.csv("./data/Obesity_GDP_PanelData.csv")
+obesity_data <- read.csv("./data/Obesity_GDP_PanelData.csv")
 
+states_data <- read.csv("./data/states.csv")
 
-combined <- merge(legislation, obesity, by=c("State", "Year"))
+combined <- merge(legislation_data, obesity_data, by=c("State", "Year"))
 
 grouped_states_year <- combined %>%
   group_by(State, Year, LocationAbbr, Adult.Obesity.100)
@@ -71,19 +72,24 @@ state_table_data <- function(input_state) {
     rename("State Abbreviation" = "LocationAbbr")
   
   # need to left join for years that we do not have any legislation data
-  temp <- left_join(obesity, legislation, by=c("State", "Year")) %>%
-    group_by(State, Year, LocationAbbr, Adult.Obesity.100)
+  temp <- left_join(obesity_data, legislation_data, by=c("State", "Year"))
+  
+  temp <- merge(states_data, temp, by="State") %>%
+    group_by(State, Year, Abbreviation, Adult.Obesity.100)
+  
   
   # finds the rows where there is no legislation data
   na_rows <- temp %>%
     filter(State == input_state) %>%
     filter(is.na(Title)) %>%
-    select(State, Year, LocationAbbr, Adult.Obesity.100)
+    select(State, Year, Abbreviation, Adult.Obesity.100)
+  
+  
   na_rows$all_legislation <- NA
   na_rows <- na_rows %>%
     rename("All Legislation" = all_legislation) %>%
     rename("Adult Obesity Percentage" = Adult.Obesity.100) %>%
-    rename("State Abbreviation" = "LocationAbbr")
+    rename("State Abbreviation" = "Abbreviation")
   
   # appends the na_rows to the annual_count 
   annual_count <- rbind(annual_count, na_rows)

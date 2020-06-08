@@ -125,6 +125,7 @@ ui <- shinyUI(
             tags$p(map_analysis),
             plotOutput("bar"),
             tags$br(),
+            tags$h4("Analysis"),
             tags$p(bar_chart_analysis)
           )
         )
@@ -142,6 +143,8 @@ ui <- shinyUI(
           mainPanel(
             plotlyOutput("policy_map"),
             tableOutput("states_table"),
+            tags$p("Note: NA Values in table means we do not have legislation data for that year and state."),
+            tags$h4("Analysis"),
             tags$p("In the scope of the United States, the displays adult obesity rates and number of policies implemented
                to help reduce obesity. Not all states
                participated in enacting health policies during certain years, so they may not show up on the map."),
