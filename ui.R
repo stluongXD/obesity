@@ -1,10 +1,9 @@
+
 library(shiny)
 library(plotly)
-library(ggplot2)
 source("./scripts/intro.R")
 source("./scripts/conclusion.R")
-source("./scripts/income.R")
-
+source("./scripts/region_analysis_final.R")
 
 years <- selectInput(
   "years",
@@ -16,14 +15,20 @@ years <- selectInput(
   selected = as.numeric(2014)
 )
 
-
-factors <- selectInput(
-  "factors",
-  label = "Factors",
-  choices = list("Income" = "Income",
-                 "Poverty Rate" = "Poverty_Rate",
-                 "State GDP" = "State_GDP"),
-                 selected = "Average.Income"
+regions <- selectInput(
+  "regions",
+  label = "Regions",
+  choices = list(
+    "Far West" = "Far West Region",
+    "Great Lakes" = "Great Lakes Region",
+    "Mideast" = "Mideast Region",
+    "Plains" = "Plains Region",
+    "New England" = "New England Region",
+    "Rocky Mountain" = "Rocky Mountain Region",
+    "Southeast" = "Southeast Region",
+    "Southwest" = "Southwest Region"
+  ),
+  selected = "Far West Region"
 )
 
 ui <- shinyUI(
@@ -49,30 +54,24 @@ ui <- shinyUI(
         tags$p(analysis_pt3)
       ),
       tabPanel(
-        tags$h4("Effects of Wealth on Obesity"),
-        sidebarLayout(
-          sidebarPanel(
-           factors  
-          ),
-          mainPanel(
-            plotOutput("income_plot")
-          )
-        ),
-        br(),
-        tags$h4("Sections of Analysis"),
-        tags$h5("Analysis on the Relationship Between Income and Obesity Rate"),
-        tags$p(Analysis_Income),
-        br(),
-        tags$h5("Analysis on the Relationship Between Poverty Rate and Obesity Rate"),
-        tags$p(Analysis_poverty),
-        br(),
-        tags$h5("Analysis on the Relationship Between State GDP and Obesity Rate"),
-        tags$p(Analysis_GDP)
+        tags$h4("Effects of Wealth on Obesity")
       ),
       tabPanel(
-        tags$h4("Regional Differences on Obesity")
-        # add graph/sliders and related stuff goes here
-        # add a paragraph of the insights gained
+        tags$h4("Regional Differences on Obesity"),
+        sidebarLayout(
+          sidebarPanel(
+            regions
+          ),
+          mainPanel(
+            plotlyOutput("regional_plot"),
+            tags$br(),
+            plotlyOutput("map"),
+            tags$p(map_analysis),
+            plotOutput("bar"),
+            tags$br(),
+            tags$p(bar_chart_analysis)
+          )
+        )
       ),
       tabPanel(
         tags$h4("Effectiveness of Public Policy on Obesity"),
@@ -83,7 +82,7 @@ ui <- shinyUI(
             years
           ),
           mainPanel(
-            plotlyOutput("policy_map")
+            plotlyOutput("policy_map"),
           )
         )
       ),
